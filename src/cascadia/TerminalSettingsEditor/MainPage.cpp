@@ -225,7 +225,10 @@ namespace winrt::Microsoft::Terminal::Settings::Editor::implementation
         }
         else if (clickedItemTag == colorSchemesTag)
         {
-            contentFrame().Navigate(xaml_typename<Editor::ColorSchemes>(), winrt::make<ColorSchemesPageNavigationState>(_settingsClone.GlobalSettings()));
+            // Add an event handler for when the user renames/deletes a color scheme
+            auto state{ winrt::make<ColorSchemesPageNavigationState>(_settingsClone.GlobalSettings()) };
+            state.ModifyColorSchemeName({ this, &MainPage::_ModifyColorSchemeName });
+            contentFrame().Navigate(xaml_typename<Editor::ColorSchemes>(), state);
         }
         else if (clickedItemTag == globalAppearanceTag)
         {
@@ -352,5 +355,21 @@ namespace winrt::Microsoft::Terminal::Settings::Editor::implementation
         const auto newSelectedItem{ menuItems.GetAt(index < menuItems.Size() - 1 ? index : index - 1) };
         SettingsNav().SelectedItem(newSelectedItem);
         _Navigate(newSelectedItem.try_as<MUX::Controls::NavigationViewItem>().Tag().try_as<Editor::ProfileViewModel>());
+    }
+
+    // Method Description:
+    // - Updates all references to a renamed/deleted color scheme
+    // Arguments:
+    // - sender - unused
+    // - args - data regarding the color scheme that was modified
+    void MainPage::_ModifyColorSchemeName(const IInspectable /*sender*/, const Editor::ModifyColorSchemeNameEventArgs& args)
+    {
+        for (auto profile : _settingsClone.AllProfiles())
+        {
+            if (profile.ColorSchemeName() == args.OldName())
+            {
+                profile.ColorSchemeName(args.NewName());
+            }
+        }
     }
 }
