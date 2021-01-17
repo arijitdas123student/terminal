@@ -276,10 +276,10 @@ If you would like to ask a question that you feel doesn't warrant an issue
 * You must have the [Windows 10 1903
   SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
   installed
-* You must have at least [VS
+* You must have at least [VS Code
   2019](https://visualstudio.microsoft.com/downloads/) installed
 * You must install the following Workloads via the VS Installer. Note: Opening
-  the solution in VS 2019 will [prompt you to install missing components
+  the solution in VS Code 2019 will [prompt you to install missing components
   automatically](https://devblogs.microsoft.com/setup/configure-visual-studio-across-your-organization-with-vsconfig/):
   * Desktop Development with C++
   * Universal Windows Platform Development
